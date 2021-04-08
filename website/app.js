@@ -1,6 +1,6 @@
 /* Global Variables */
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip='
-const apiKey = '72bacd0a5750931385c2440c0e23ad65';
+const apiKey = '0283ed25d0f661e72b80a15d36f2f383';
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -17,7 +17,7 @@ function performAction(e) {
   getWeather(baseURL, newZip, apiKey)
     .then(function (data) {
       // add data to POST request
-      postData('/add', { date: newDate, temp: data.main.temp, userText });
+      postData('/add', { date: newDate, temperature: data.main.temp, userText });
       updateUI('/all');
     })
 };
@@ -29,6 +29,7 @@ const getWeather = async (baseURL, newZip, apiKey) => {
   try {
     // data equals to the result of fetch function
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log("error", error);
@@ -59,7 +60,7 @@ const updateUI = async () => {
   try {
     const allData = await request.json();
     document.getElementById('date').innerHTML = allData[0].date;
-    document.getElementById('temp').innerHTML = allData[0].temp;
+    document.getElementById('temp').innerHTML = allData[0].temperature;
     document.getElementById('content').innerHTML = allData[0].userText;
   }
   catch (error) {
