@@ -4,7 +4,7 @@ const apiKey = '&appid=0283ed25d0f661e72b80a15d36f2f383&units=metric';
 
 // Create a new date instance dynamically with JS
 let d = new Date();
-let newDate = d.getMonth() + '.' + d.getDate() + '.' + d.getFullYear();
+let newDate = (d.getMonth()+1) + '.' + d.getDate() + '.' + d.getFullYear();
 
 // create click event to button
 document.getElementById('generate').addEventListener('click', performAction);
@@ -17,7 +17,8 @@ function performAction(e) {
   getWeather(baseURL, newZip, apiKey)
     .then(function (data) {
       // add data to POST request
-      postData('/add', { date: newDate, temperature: data.main.temp, userText });
+      console.log(data);
+      postData('/add', { date: newDate, temperature: data.main.temp, feelings: userText});
       updateUI('/all');
     })
 };
@@ -49,6 +50,7 @@ const postData = async (url = '', data = {}) => {
 
   try {
     const newData = await response.json();
+    console.log(newData);
     return newData;
   } catch (error) {
     console.log('error', error);
@@ -59,9 +61,9 @@ const updateUI = async () => {
   const request = await fetch('/all');
   try {
     const allData = await request.json();
-    document.getElementById('date').innerHTML = allData[0].date;
-    document.getElementById('temp').innerHTML = allData[0].temperature;
-    document.getElementById('content').innerHTML = allData[0].userText;
+    document.getElementById('date').innerHTML = allData.date;
+    document.getElementById('temp').innerHTML = allData.temperature;
+    document.getElementById('content').innerHTML = allData.feelings;
   }
   catch (error) {
     console.log("error", error);
